@@ -1,7 +1,7 @@
 /**
  * Module dependencies.
  */
-import tasks from '@/modules/tasks/views/tasks.view.vue';
+import tasks from '../views/tasks.view.vue';
 
 /**
  * Router configuration
