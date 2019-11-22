@@ -7,7 +7,7 @@
     <v-toolbar-title>
       <router-link to="/">{{ this.config.app.title }}</router-link>
     </v-toolbar-title>
-    <div class="flex-grow-1"></div>
+    <v-spacer></v-spacer>
     <v-btn v-if="!isLoggedIn" icon>
       <router-link to="/signin">
        <v-icon>fa-user</v-icon>
