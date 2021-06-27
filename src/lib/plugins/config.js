@@ -1,7 +1,9 @@
 /**
  * Module dependencies.
  */
-import Vue from 'vue';
+import { createApp } from 'vue';
+import App from '@/modules/_app/app.vue';
 import config from '@/config';
 
-Vue.prototype.config = config;
+const app = createApp(App);
+app.config.globalProperties.$config = config;
