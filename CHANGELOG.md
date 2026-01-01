@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/weareopensource/Vue/compare/v1.3.0...v1.3.1) (2026-01-01)
+
+
+### Bug Fixes
+
+* **workflow:** dependabot 🐛 ([#3465](https://github.com/weareopensource/Vue/issues/3465)) ([1043727](https://github.com/weareopensource/Vue/commit/1043727a3f46a311f4c44b2a0c4da61e27a43dac))
+
 # [1.3.0](https://github.com/weareopensource/Vue/compare/v1.2.0...v1.3.0) (2025-11-22)
 
 
