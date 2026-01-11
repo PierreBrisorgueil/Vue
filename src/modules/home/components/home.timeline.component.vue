@@ -1,5 +1,33 @@
+<!--
+  HomeTimelineComponent
+  =====================
+  Vertical timeline with icons, cards, and optional images.
+
+  USAGE:
+  <homeTimelineComponent :setup="config.home.install" />
+
+  CONFIG EXAMPLE (setup object):
+  install: {
+    style: {
+      section: { background: 'surface' },
+      card: { background: 'background' },
+    },
+    content: [
+      {
+        icon: 'fa-solid fa-download',
+        color: '#1abc9c',            // Dot color
+        iconColor: 'white',          // Icon color (default: white)
+        title: 'Step 1',             // Opposite side title
+        subtitle: 'Installation',
+        text: 'Description with **markdown** support.',
+        img: '/images/step1.webp',   // Optional image
+        reversed: false,             // Image position
+      },
+    ],
+  }
+-->
 <template>
-  <section id="timeline" :style="style('section', setup)">
+  <section id="timeline" :style="sectionStyle">
     <v-container ref="timelineContainer" :style="`max-width: ${config.vuetify.theme.maxWidth}`">
       <v-row align="center" justify="center" class="px-0 py-8">
         <homeTitleComponent :setup="setup"></homeTitleComponent>
@@ -16,9 +44,9 @@
             <template v-if="item.title" #opposite>
               <h5 class="text-h6 text-md-h5 text-secondary font-weight-bold" v-text="item.title"></h5>
             </template>
-            <v-card :class="`${config.vuetify.theme.rounded} my-8 pb-2`" :flat="config.vuetify.theme.flat" :style="style('card', setup)">
+            <v-card :class="`${config.vuetify.theme.rounded} my-8 pb-2`" :flat="config.vuetify.theme.flat" :style="cardStyle">
               <homeImgComponent v-if="item.img && !item.reversed" :img="item.img"></homeImgComponent>
-              <homeCardsTextComponent :item="item"></homeCardsTextComponent>
+              <homeTextComponent :item="item" variant="card" alignment="center"></homeTextComponent>
               <homeImgComponent v-if="item.img && item.reversed" :img="item.img"></homeImgComponent>
             </v-card>
           </v-timeline-item>
@@ -32,9 +60,10 @@
 /**
  * Module dependencies.
  */
+import { useTheme } from 'vuetify';
 import { style } from '../../../lib/helpers/theme';
 import homeTitleComponent from './utils/home.title.component.vue';
-import homeCardsTextComponent from './utils/home.card.text.component.vue';
+import homeTextComponent from './utils/home.text.component.vue';
 import homeImgComponent from './utils/home.img.component.vue';
 /**
  * Component definition.
@@ -43,13 +72,39 @@ export default {
   name: 'HomeTimelineComponent',
   components: {
     homeTitleComponent,
-    homeCardsTextComponent,
+    homeTextComponent,
     homeImgComponent,
   },
   props: {
     setup: {
       type: Object,
       default: () => {},
+    },
+  },
+  data() {
+    const theme = useTheme();
+    return {
+      theme,
+    };
+  },
+  computed: {
+    variant() {
+      return this.setup.variant || 'default';
+    },
+    sectionStyle() {
+      const bgColor = this.variant === 'alternate' ? this.theme.current.colors.surface : this.theme.current.colors.background;
+      return {
+        ...style('section', this.setup),
+        background: bgColor,
+      };
+    },
+    cardStyle() {
+      // Inverse la couleur de la card par rapport à la section
+      const cardColor = this.variant === 'alternate' ? this.theme.current.colors.background : this.theme.current.colors.surface;
+      return {
+        ...style('card', this.setup),
+        background: cardColor,
+      };
     },
   },
   methods: {

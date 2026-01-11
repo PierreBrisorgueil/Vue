@@ -1,3 +1,30 @@
+<!--
+  HomeBannerImgComponent
+  ======================
+  Image-based banner with optional title, subtitle and button.
+
+  USAGE:
+  <homeBannerImgComponent
+    :title="'Welcome to **our site**'"
+    :subtitle="'Build faster with modern tools'"
+    :button="{ title: 'Get Started', color: '#55efc4', link: '/signup' }"
+    :banner="'/images/custom-banner.webp'"
+    :ratio="3"
+  />
+
+  PROPS:
+  - title (String): Main title, supports markdown
+  - subtitle (String): Subtitle text, supports markdown
+  - button (Object): { title: String, color: String, link: String }
+  - banner (String): Custom banner image URL (overrides config)
+  - ratio (Number|String): Height ratio (e.g., 3 = 33vh), null for full banner
+
+  CONFIG EXAMPLE (config.home.banner.img):
+  img: {
+    lightBackground: '/images/light.webp',
+    darkBackground: '/images/dark.webp',
+  }
+-->
 <template>
   <section id="banner">
     <v-img
@@ -35,6 +62,8 @@
 </template>
 
 <script>
+import { useTheme } from 'vuetify';
+
 /**
  * Component definition.
  */
@@ -67,12 +96,20 @@ export default {
       default: () => ({}),
     },
   },
+  data() {
+    const theme = useTheme();
+    return {
+      theme,
+    };
+  },
+  computed: {
+    themeName() {
+      return this.theme.global.name.value;
+    },
+  },
   methods: {
     generateBackground() {
-      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        return this.config.home.darkBackground;
-      }
-      return this.config.home.lightBackground;
+      return this.themeName === 'dark' ? this.config.home.banner?.img?.darkBackground : this.config.home.banner?.img?.lightBackground;
     },
   },
 };

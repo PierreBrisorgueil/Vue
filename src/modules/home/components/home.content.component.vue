@@ -1,5 +1,40 @@
+<!--
+  HomeContentComponent
+  ====================
+  Content section with text, images, and optional video. Supports multiple columns.
+
+  USAGE:
+  <homeContentComponent :setup="config.home.features" />
+
+  CONFIG EXAMPLE (setup object):
+  features: {
+    title: 'Features',
+    style: {
+      section: { background: 'background' },
+      video: { background: '#101115' },
+    },
+    content: [
+      {
+        subtitle: 'Feature Title',
+        text: 'Description with **markdown** support.',
+        img: '/images/feature.webp',          // Static image
+        video: {                               // Or video
+          file: '/videos/demo.mp4',
+          poster: '/videos/demo-poster.webp',
+        },
+        reversed: false,       // Text position (false = after media, true = before)
+        fullWidth: true,       // Full width content
+        quote: false,          // Display as quote style
+        button: {
+          title: 'Learn More',
+          link: '/features',
+        },
+      },
+    ],
+  }
+-->
 <template>
-  <section id="contents" :style="style('section', setup)">
+  <section id="content" :style="sectionStyle">
     <v-container :style="`max-width: ${config.vuetify.theme.maxWidth}`">
       <v-row v-if="setup.content.length > 0" align="center" justify="center" class="px-0 py-8">
         <homeTitleComponent :setup="setup"></homeTitleComponent>
@@ -33,16 +68,17 @@
 /**
  * Module dependencies.
  */
+import { useTheme } from 'vuetify';
 import VideoPlayer from './utils/home.videoplayer.component.vue';
 import { style } from '../../../lib/helpers/theme';
 import homeTitleComponent from './utils/home.title.component.vue';
-import homeContentsTextComponent from './utils/home.content.text.component.vue';
+import homeContentsTextComponent from './utils/home.text.component.vue';
 
 /**
  * Component definition.
  */
 export default {
-  name: 'HomeContentsComponent',
+  name: 'HomeContentComponent',
   components: {
     VideoPlayer,
     homeTitleComponent,
@@ -52,6 +88,24 @@ export default {
     setup: {
       type: Object,
       default: () => {},
+    },
+  },
+  data() {
+    const theme = useTheme();
+    return {
+      theme,
+    };
+  },
+  computed: {
+    variant() {
+      return this.setup.variant || 'default';
+    },
+    sectionStyle() {
+      const bgColor = this.variant === 'alternate' ? this.theme.current.colors.surface : this.theme.current.colors.background;
+      return {
+        ...style('section', this.setup),
+        background: bgColor,
+      };
     },
   },
   methods: {

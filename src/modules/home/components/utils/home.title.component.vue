@@ -1,3 +1,23 @@
+<!--
+  HomeTitleComponent
+  ==================
+  Section title and subtitle header, used across all home components.
+
+  USAGE:
+  <homeTitleComponent :setup="setup" />
+  <homeTitleComponent :setup="{ title: 'Main', subtitle: 'Sub' }" :offpadding="true" />
+
+  PROPS:
+  - setup (Object, required): Must contain title and/or subtitle
+  - offpadding (Boolean): Remove default padding (for nested use)
+  - slide (Boolean): Add left margin for carousel alignment
+
+  SETUP OBJECT FORMAT:
+  {
+    title: 'Main Title',        // Displayed in primary color, h3/h4 size
+    subtitle: 'Subtitle',       // Displayed in secondary color, h4/h5 size
+  }
+-->
 <template>
   <v-col v-if="setup.title || setup.subtitle" cols="12" :class="offpadding ? 'text-left pa-0' : 'text-left'">
     <h4

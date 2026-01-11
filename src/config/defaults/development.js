@@ -160,8 +160,6 @@ export default {
     ],
   },
   home: {
-    lightBackground: '/images/light.webp',
-    darkBackground: '/images/dark.webp',
     banner: {
       title: 'Turn your ideas <br /> <b><span style="color:#55efc4">into a reality.</span></b>',
       subtitle: 'WeAreOpenSource allow you to start projects faster with scalable stacks.',
@@ -170,26 +168,35 @@ export default {
         color: '#55efc4',
         link: 'https://github.com/weareopensource',
       },
+      img: {
+        lightBackground: '/images/light.webp',
+        darkBackground: '/images/dark.webp',
+      },
+      blur: {
+        animationSpeed: 1,
+        light: {
+          backgroundColors: ['#4a90c2', '#3d7eb0', '#2d6a9e', '#1e5a8c', '#164578'],
+          haloColors: ['#0891b2', '#0ea5e9', '#3b82f6', '#0284c7', '#0369a1'],
+        },
+        dark: {
+          backgroundColors: ['#0a0a1a', '#1a1a3e', '#2d2d6b', '#3d3d8a', '#2563eb'],
+          haloColors: ['#4f46e5', '#7c3aed', '#2563eb', '#6366f1', '#8b5cf6'],
+        },
+      },
     },
     video: {
       file: '/videos/highlight.mp4',
       poster: '/videos/highlight-poster.webp',
       subBanner: true,
+      variant: 'default',
       style: {
-        section: {
-          background: 'background',
-        },
         video: {
           background: '#101115',
         },
       },
     },
-    punchline: {
-      style: {
-        section: {
-          background: 'surface',
-        },
-      },
+    contentBlocks: {
+      variant: 'alternate',
       content: [
         {
           subtitle: 'We Are Open Source',
@@ -203,10 +210,80 @@ export default {
       ],
     },
     features: {
+      title: 'Platform Features',
+      subtitle: 'Everything you need to build modern applications',
+      defaultActiveId: 'performance',
+      variant: 'alternate',
       style: {
-        section: {
-          background: 'background',
+        navCard: {
+          background: 'surface',
         },
+        contentCard: {
+          background: 'surface',
+        },
+      },
+      items: [
+        {
+          id: 'performance',
+          label: 'Performance',
+          icon: 'fa-solid fa-gauge-high',
+          title: 'Lightning Fast',
+          description:
+            'Built with **performance** in mind from the ground up. Our architecture ensures your application runs smoothly with optimized rendering, lazy loading, and minimal bundle sizes. Experience **sub-second load times** and instant interactions.',
+          cta: {
+            text: 'Learn More',
+            link: '/docs/performance',
+          },
+          image: '/images/card01.webp',
+          reversed: false,
+        },
+        {
+          id: 'security',
+          label: 'Security',
+          icon: 'fa-solid fa-shield-halved',
+          title: 'Enterprise-Grade Security',
+          description:
+            "Security is not an afterthought. We implement industry-standard **JWT authentication**, **OAuth2 integration**, and robust **data encryption**. Your users' data is protected with the latest security practices.",
+          cta: {
+            text: 'View Security Guide',
+            link: '/docs/security',
+          },
+          image: '/images/content01.webp',
+          reversed: true,
+        },
+        {
+          id: 'scalable',
+          label: 'Scalable',
+          icon: 'fa-solid fa-arrow-up-right-dots',
+          title: 'Built to Scale',
+          description:
+            'From **prototype to production**, our stack grows with you. **Modular architecture**, **microservices-ready**, and **cloud-native** design ensure your application can handle millions of users without breaking a sweat.',
+          cta: {
+            text: 'Architecture Guide',
+            link: '/docs/architecture',
+          },
+          image: '/images/card02.webp',
+          reversed: false,
+        },
+        {
+          id: 'developer',
+          label: 'Developer Experience',
+          icon: 'fa-solid fa-code',
+          title: 'Developer First',
+          description:
+            'Focus on building features, not fighting tools. Hot module replacement, **comprehensive testing suite**, **CI/CD pipelines**, and extensive documentation ensure you spend time on what matters - creating great products.',
+          cta: {
+            text: 'Get Started',
+            link: '/docs/quickstart',
+          },
+          image: '/images/content02.webp',
+          reversed: true,
+        },
+      ],
+    },
+    contentBlocksFeatures: {
+      variant: 'default',
+      style: {
         video: {
           background: '#101115',
         },
@@ -234,12 +311,8 @@ export default {
         },
       ],
     },
-    repos: {
-      style: {
-        section: {
-          background: 'surface',
-        },
-      },
+    cardCarousel: {
+      variant: 'default',
       slide: {
         interval: 15000,
       },
@@ -312,16 +385,9 @@ export default {
         },
       ],
     },
-    ressources: {
+    iconGrid: {
       title: 'Some ressources to start',
-      style: {
-        section: {
-          background: 'background',
-        },
-        card: {
-          background: 'surface',
-        },
-      },
+      variant: 'alternate',
       content: [
         {
           icon: 'fa-solid fa-book',
@@ -343,45 +409,31 @@ export default {
         },
       ],
     },
-    install: {
-      style: {
-        section: {
-          background: 'surface',
-        },
-        card: {
-          background: 'background',
-        },
-      },
+    timeline: {
+      variant: 'default',
       content: [
         {
           icon: 'fa-solid fa-comment',
           color: '#1abc9c',
-          title: 'Smooth setup!',
           subtitle: 'Clone our stacks',
           text: 'Start by [cloning your preferred stacks](https://blog.weareopensource.me/start-a-project-and-maintain-updates/) while keeping our repository as a git remote to seamlessly follow updates. Just manage the merges and minimally edit the stack for ease of use.',
         },
         {
           icon: 'fa-solid fa-user',
           color: '#1abc9c',
-          title: 'Configuration',
           subtitle: 'Setup your content',
           text: 'Configure the stacks to communicate with each other in seconds. Our homepage view includes all examples from this actual web page you are visiting, just configure them.',
         },
         {
           icon: 'fa-solid fa-hotel',
           color: '#1abc9c',
-          title: 'Host',
           subtitle: 'Deploy to prod',
           text: 'Deploy the entire setup through your favorite CI/CD and start developing your features. Think of each feature as an independent, reusable CRUD module, without editing the stack.',
         },
       ],
     },
-    designs: {
-      style: {
-        section: {
-          background: 'background',
-        },
-      },
+    mediaCarousel: {
+      variant: 'alternate',
       slide: {
         height: '600px',
         interval: 6000,
@@ -395,11 +447,9 @@ export default {
         },
       ],
     },
-    partners: {
+    logoSlider: {
+      variant: 'default',
       style: {
-        section: {
-          background: 'surface',
-        },
         card: {
           background: 'surface',
         },
@@ -422,11 +472,7 @@ export default {
       ],
     },
     blog: {
-      style: {
-        section: {
-          background: 'background',
-        },
-      },
+      variant: 'alternate',
       slide: {
         interval: 15000,
       },
@@ -434,7 +480,22 @@ export default {
       url: 'https://blog.weareopensource.me',
       key: '0415f48774e7c49c713204f787',
     },
-    stats: {
+    metrics: {
+      variant: 'blur', // 'parallax' | 'blur'
+      parallax: {
+        image: '/images/parallax.webp',
+      },
+      blur: {
+        animationSpeed: 1.5,
+        light: {
+          backgroundColors: ['#1e3a5f', '#2d4a6f', '#3d5a7f', '#4d6a8f', '#5d7a9f'],
+          haloColors: ['#0891b2', '#0ea5e9', '#3b82f6', '#0284c7', '#0369a1'],
+        },
+        dark: {
+          backgroundColors: ['#0a0a1a', '#1a1a3e', '#2d2d6b', '#3d3d8a', '#2563eb'],
+          haloColors: ['#4f46e5', '#7c3aed', '#2563eb', '#6366f1', '#8b5cf6'],
+        },
+      },
       content: [
         {
           value: '0',
@@ -455,11 +516,7 @@ export default {
       ],
     },
     contact: {
-      style: {
-        section: {
-          background: 'background',
-        },
-      },
+      variant: 'default',
       title: 'Feel free to contact us',
       mail: 'mailto:pierre@weareopensource.me',
     },

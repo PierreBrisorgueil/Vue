@@ -1,5 +1,44 @@
+<!--
+  HomeCardsComponent
+  ==================
+  Carousel of cards with image, text, and button. Supports sliding and styling.
+
+  USAGE:
+  <homeCardsComponent :setup="config.home.repos" />
+
+  CONFIG EXAMPLE (setup object):
+  repos: {
+    title: 'Our Products',
+    slide: {
+      interval: 15000,  // Auto-slide interval in ms
+    },
+    style: {
+      section: { background: 'surface' },
+    },
+    content: [
+      {
+        subtitle: 'Product Name',
+        img: '/images/card01.webp',
+        text: 'Description with **markdown** support.',
+        reversed: false,       // Image position (false = top, true = bottom)
+        fullWidth: false,      // Full width card
+        button: {
+          title: 'Learn More →',
+          color: '#EA3F7D',
+          link: 'https://example.com',
+        },
+        style: {
+          card: {
+            background: '#FFD0E4',
+            color: '#000000',
+          },
+        },
+      },
+    ],
+  }
+-->
 <template>
-  <section id="cards" :style="style('section', setup)">
+  <section id="cards" :style="sectionStyle">
     <v-container ref="cardsContainer" :style="`max-width: ${config.vuetify.theme.maxWidth}`">
       <v-row align="center" justify="center" class="px-0 py-8">
         <homeTitleComponent :setup="setup"></homeTitleComponent>
@@ -19,7 +58,7 @@
               <v-col v-for="(item, i) in content" :key="i" cols="12" :md="item.fullWidth ? 12 : setup.content.length > 1 ? 6 : 12">
                 <v-card :class="`${config.vuetify.theme.rounded}`" :flat="config.vuetify.theme.flat" :style="style('card', { style: item.style })">
                   <homeImgComponent v-if="item.img && !item.reversed" :img="item.img"></homeImgComponent>
-                  <homeCardsTextComponent :item="item"></homeCardsTextComponent>
+                  <homeTextComponent :item="item" variant="card" alignment="center"></homeTextComponent>
                   <homeImgComponent v-if="item.img && item.reversed" :img="item.img"></homeImgComponent>
                 </v-card>
               </v-col>
@@ -36,10 +75,11 @@
 /**
  * Module dependencies.
  */
+import { useTheme } from 'vuetify';
 import { style } from '../../../lib/helpers/theme';
 import homeTitleComponent from './utils/home.title.component.vue';
 import homeDynamicIsland from './utils/home.dynamicIsland.component.vue';
-import homeCardsTextComponent from './utils/home.card.text.component.vue';
+import homeTextComponent from './utils/home.text.component.vue';
 import homeImgComponent from './utils/home.img.component.vue';
 
 /**
@@ -50,7 +90,7 @@ export default {
   components: {
     homeTitleComponent,
     homeDynamicIsland,
-    homeCardsTextComponent,
+    homeTextComponent,
     homeImgComponent,
   },
   props: {
@@ -59,11 +99,25 @@ export default {
       default: () => {},
     },
   },
-  data: () => ({
-    step: 0,
-    cardsContainer: null,
-  }),
+  data() {
+    const theme = useTheme();
+    return {
+      step: 0,
+      cardsContainer: null,
+      theme,
+    };
+  },
   computed: {
+    variant() {
+      return this.setup.variant || 'default';
+    },
+    sectionStyle() {
+      const bgColor = this.variant === 'alternate' ? this.theme.current.colors.surface : this.theme.current.colors.background;
+      return {
+        ...style('section', this.setup),
+        background: bgColor,
+      };
+    },
     steps() {
       return this.$vuetify.display.smAndDown ? this.setup.content.length - 1 : Math.ceil(this.setup.content.length / 2) - 1;
     },

@@ -1,5 +1,22 @@
+<!--
+  HomeContactComponent
+  ====================
+  Contact form section with subject and message fields.
+
+  USAGE:
+  <homeContactComponent v-if="config.home.contact" />
+
+  CONFIG EXAMPLE (config.home.contact):
+  contact: {
+    title: 'Feel free to contact us',
+    mail: 'mailto:contact@example.com',
+    style: {
+      section: { background: 'background' },
+    },
+  }
+-->
 <template>
-  <section id="contact" :style="style('section', config.home.contact)">
+  <section id="contact" :style="sectionStyle">
     <v-container :style="`max-width: ${config.vuetify.theme.maxWidth}`">
       <v-row align="center" justify="center" class="px-0 py-8">
         <homeTitleComponent :setup="config.home.contact"></homeTitleComponent>
@@ -8,9 +25,9 @@
             <v-text-field v-model="subject" :flat="config.vuetify.theme.flat" name="subject" label="Subject*"></v-text-field>
             <v-textarea v-model="body" :flat="config.vuetify.theme.flat" label="Message*"></v-textarea>
             <v-btn
-              :color="config.vuetify.theme.themes[theme].colors.secondary"
+              :color="theme.current.colors.secondary"
               :style="{
-                color: config.vuetify.theme.themes[theme].colors.onSecondary,
+                color: theme.current.colors.onSecondary,
               }"
               depressed
               x-large
@@ -28,7 +45,7 @@
 /**
  * Module dependencies.
  */
-import { useCoreStore } from '../../core/stores/core.store';
+import { useTheme } from 'vuetify';
 import { useHomeStore } from '../stores/home.store';
 import { style } from '../../../lib/helpers/theme';
 import homeTitleComponent from './utils/home.title.component.vue';
@@ -41,10 +58,24 @@ export default {
   components: {
     homeTitleComponent,
   },
+  props: {},
+  data() {
+    const theme = useTheme();
+    return {
+      save: false,
+      theme,
+    };
+  },
   computed: {
-    theme() {
-      const coreStore = useCoreStore();
-      return coreStore.theme;
+    variant() {
+      return this.config.home.contact?.variant || 'default';
+    },
+    sectionStyle() {
+      const bgColor = this.variant === 'alternate' ? this.theme.current.colors.surface : this.theme.current.colors.background;
+      return {
+        ...style('section', this.config.home.contact),
+        background: bgColor,
+      };
     },
     contact() {
       const homeStore = useHomeStore();

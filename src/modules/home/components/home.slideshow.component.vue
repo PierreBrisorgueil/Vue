@@ -1,5 +1,40 @@
+<!--
+  HomeSlideshowComponent
+  ======================
+  Full-width image slideshow with optional text overlay and tabs.
+
+  USAGE:
+  <homeSlideshowComponent :setup="config.home.designs" />
+
+  CONFIG EXAMPLE (setup object):
+  designs: {
+    subBanner: false,              // Position under banner with overlap
+    style: {
+      section: { background: 'background' },
+    },
+    slide: {
+      height: '600px',             // Carousel height
+      interval: 6000,              // Auto-slide interval in ms
+      showTitle: false,            // Show tabs with titles
+      titleColor: 'primary',       // Tab text color
+    },
+    content: [
+      {
+        img: {
+          src: '/images/slide01.webp',
+          gradient: 'to right, rgba(0,0,0,.5), transparent',
+          height: 400,             // Sub-image height
+        },
+        subtitle: 'Slide Title',
+        text: 'Description text',
+        subimg: '/images/subimage.webp',
+        reversed: false,           // Subimage position (left/right)
+      },
+    ],
+  }
+-->
 <template>
-  <section id="slideshow" :style="style('section', setup)">
+  <section id="slideshow" :style="sectionStyle">
     <v-container
       ref="slideShowContainer"
       :style="{
@@ -64,6 +99,7 @@
 /**
  * Module dependencies.
  */
+import { useTheme } from 'vuetify';
 import { style } from '../../../lib/helpers/theme';
 import homeTitleComponent from './utils/home.title.component.vue';
 import homeDynamicIsland from './utils/home.dynamicIsland.component.vue';
@@ -86,12 +122,25 @@ export default {
     },
   },
   data() {
+    const theme = useTheme();
     return {
       step: 0,
       slideShowContainer: null,
+      theme,
     };
   },
   computed: {
+    variant() {
+      return this.setup.variant || 'default';
+    },
+    sectionStyle() {
+      if (!this.theme?.current?.colors) return style('section', this.setup);
+      const bgColor = this.variant === 'alternate' ? this.theme.current.colors.surface : this.theme.current.colors.background;
+      return {
+        ...style('section', this.setup),
+        background: bgColor,
+      };
+    },
     steps() {
       return this.setup.content.length - 1;
     },

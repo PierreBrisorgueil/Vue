@@ -1,21 +1,35 @@
 <template>
   <div>
-    <homeBannerComponent
+    <homeBannerBlurComponent
       v-if="config.home.banner"
       :title="config.home.banner.title"
       :subtitle="config.home.banner.subtitle"
       :button="config.home.banner.button"
-    ></homeBannerComponent>
+      :animation-speed="config.home.banner.blur?.animationSpeed || 1"
+      :background-colors="themeName === 'dark' ? config.home.banner.blur?.dark?.backgroundColors : config.home.banner.blur?.light?.backgroundColors"
+      :halo-colors="themeName === 'dark' ? config.home.banner.blur?.dark?.haloColors : config.home.banner.blur?.light?.haloColors"
+    ></homeBannerBlurComponent>
     <homeVideoComponent v-if="config.home.video" :setup="config.home.video"></homeVideoComponent>
-    <homeContentsComponent v-if="config.home.punchline" :setup="config.home.punchline"></homeContentsComponent>
-    <homeContentsComponent v-if="config.home.features" :setup="config.home.features"></homeContentsComponent>
-    <homeCardsComponent v-if="config.home.repos" :setup="config.home.repos"></homeCardsComponent>
-    <homeIconsComponent v-if="config.home.ressources" :setup="config.home.ressources"></homeIconsComponent>
-    <homeTimelineComponent v-if="config.home.install" :setup="config.home.install"></homeTimelineComponent>
-    <homeSlideshowComponent v-if="config.home.designs" :setup="config.home.designs"></homeSlideshowComponent>
-    <homeLogosComponent v-if="config.home.partners" :setup="config.home.partners"></homeLogosComponent>
-    <homeImagesComponent v-if="config.home.blog && news.length > 0" :setup="{ content: news, ...config.home.blog }"></homeImagesComponent>
-    <homeParallaxComponent v-if="config.home.stats" :setup="statistics"></homeParallaxComponent>
+    <homeContentComponent v-if="config.home.contentBlocks" :setup="config.home.contentBlocks"></homeContentComponent>
+    <homeContentComponent v-if="config.home.contentBlocksFeatures" :setup="config.home.contentBlocksFeatures"></homeContentComponent>
+    <homeTabbedSwitcherComponent v-if="config.home.features" :setup="config.home.features"></homeTabbedSwitcherComponent>
+    <homeCardsComponent v-if="config.home.cardCarousel" :setup="config.home.cardCarousel"></homeCardsComponent>
+    <homeIconGridComponent v-if="config.home.iconGrid" :setup="config.home.iconGrid"></homeIconGridComponent>
+    <homeTimelineComponent v-if="config.home.timeline" :setup="config.home.timeline"></homeTimelineComponent>
+    <homeSlideshowComponent v-if="config.home.mediaCarousel" :setup="config.home.mediaCarousel"></homeSlideshowComponent>
+    <homeLogoSliderComponent v-if="config.home.logoSlider" :setup="config.home.logoSlider"></homeLogoSliderComponent>
+    <homeMediaCarouselComponent
+      v-if="config.home.blog && news.length > 0"
+      :setup="{ content: news, ...config.home.blog }"
+    ></homeMediaCarouselComponent>
+    <!-- Stats: blur variant -->
+    <homeMetricsBlurComponent
+      v-if="config.home.metrics && config.home.metrics.variant === 'blur'"
+      :setup="statistics"
+      :animation-speed="config.home.metrics.blur?.animationSpeed || 1.5"
+      :background-colors="themeName === 'dark' ? config.home.metrics.blur?.dark?.backgroundColors : config.home.metrics.blur?.light?.backgroundColors"
+      :halo-colors="themeName === 'dark' ? config.home.metrics.blur?.dark?.haloColors : config.home.metrics.blur?.light?.haloColors"
+    ></homeMetricsBlurComponent>
     <homeContactComponent v-if="config.home.contact"></homeContactComponent>
   </div>
 </template>
@@ -24,18 +38,19 @@
 /**
  * Module dependencies.
  */
-import { useCoreStore } from '../../core/stores/core.store';
+import { useTheme } from 'vuetify';
 import { useHomeStore } from '../stores/home.store';
-import homeBannerComponent from '../components/home.banner.component.vue';
+import homeBannerBlurComponent from '../components/home.banner.blur.component.vue';
 import homeVideoComponent from '../components/home.video.component.vue';
-import homeContentsComponent from '../components/home.contents.component.vue';
+import homeContentComponent from '../components/home.content.component.vue';
 import homeCardsComponent from '../components/home.cards.component.vue';
-import homeLogosComponent from '../components/home.logos.component.vue';
-import homeIconsComponent from '../components/home.icons.component.vue';
+import homeLogoSliderComponent from '../components/home.logoSlider.component.vue';
+import homeTabbedSwitcherComponent from '../components/home.tabbedSwitcher.component.vue';
+import homeIconGridComponent from '../components/home.iconGrid.component.vue';
 import homeTimelineComponent from '../components/home.timeline.component.vue';
 import homeSlideshowComponent from '../components/home.slideshow.component.vue';
-import homeImagesComponent from '../components/home.images.component.vue';
-import homeParallaxComponent from '../components/home.parallax.component.vue';
+import homeMediaCarouselComponent from '../components/home.mediaCarousel.component.vue';
+import homeMetricsBlurComponent from '../components/home.metrics.blur.component.vue';
 import homeContactComponent from '../components/home.contact.component.vue';
 
 /**
@@ -43,22 +58,28 @@ import homeContactComponent from '../components/home.contact.component.vue';
  */
 export default {
   components: {
-    homeBannerComponent,
+    homeBannerBlurComponent,
     homeVideoComponent,
-    homeContentsComponent,
+    homeContentComponent,
     homeCardsComponent,
-    homeLogosComponent,
-    homeIconsComponent,
+    homeLogoSliderComponent,
+    homeTabbedSwitcherComponent,
+    homeIconGridComponent,
     homeTimelineComponent,
     homeSlideshowComponent,
-    homeParallaxComponent,
-    homeImagesComponent,
+    homeMetricsBlurComponent,
+    homeMediaCarouselComponent,
     homeContactComponent,
   },
+  data() {
+    const theme = useTheme();
+    return {
+      theme,
+    };
+  },
   computed: {
-    theme() {
-      const coreStore = useCoreStore();
-      return coreStore.theme;
+    themeName() {
+      return this.theme.global.name.value;
     },
     news() {
       const homeStore = useHomeStore();
@@ -71,7 +92,10 @@ export default {
   },
   created() {
     const homeStore = useHomeStore();
-    if (this.config.home.stats) homeStore.getStatistics();
+    if (this.config.home.metrics) {
+      homeStore.initStatistics();
+      homeStore.getStatistics();
+    }
     if (this.config.home.blog) homeStore.getNews();
   },
 };

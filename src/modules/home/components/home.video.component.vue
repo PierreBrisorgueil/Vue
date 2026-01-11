@@ -1,5 +1,28 @@
+<!--
+  HomeVideoComponent
+  ==================
+  Auto-playing video section, can be positioned under banner with overlap.
+
+  USAGE:
+  <homeVideoComponent :setup="config.home.video" />
+
+  CONFIG EXAMPLE (setup object):
+  video: {
+    file: '/videos/highlight.mp4',
+    poster: '/videos/highlight-poster.webp',
+    subBanner: true,               // Position under banner with overlap effect
+    style: {
+      section: { background: 'background' },
+      video: { background: '#101115' },
+    },
+  }
+
+  NOTES:
+  - Video auto-plays, loops, and is muted by default
+  - subBanner: true creates a -40vh margin-top for overlap effect
+-->
 <template>
-  <section v-if="setup && setup.file" id="video" :style="style('section', setup)" class="pa-8 pb-10">
+  <section v-if="setup && setup.file" id="video" :style="sectionStyle" class="pa-8 pb-10">
     <v-container
       :class="`text-center pa-4 ${config.vuetify.theme.rounded}`"
       :style="{
@@ -18,6 +41,7 @@
 /**
  * Module dependencies.
  */
+import { useTheme } from 'vuetify';
 import VideoPlayer from './utils/home.videoplayer.component.vue';
 import { style } from '../../../lib/helpers/theme';
 
@@ -25,7 +49,7 @@ import { style } from '../../../lib/helpers/theme';
  * Component definition.
  */
 export default {
-  name: 'HomeAboutsComponent',
+  name: 'HomeVideoComponent',
   components: {
     VideoPlayer,
   },
@@ -38,6 +62,24 @@ export default {
         poster: 'video-poster.webp',
         background: '#101115',
       }),
+    },
+  },
+  data() {
+    const theme = useTheme();
+    return {
+      theme,
+    };
+  },
+  computed: {
+    variant() {
+      return this.setup.variant || 'default';
+    },
+    sectionStyle() {
+      const bgColor = this.variant === 'alternate' ? this.theme.current.colors.surface : this.theme.current.colors.background;
+      return {
+        ...style('section', this.setup),
+        background: bgColor,
+      };
     },
   },
   methods: {

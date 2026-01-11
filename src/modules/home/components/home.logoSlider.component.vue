@@ -1,5 +1,31 @@
+<!--
+  HomePartnersComponent
+  =====================
+  Logo carousel with description, ideal for partners or clients showcase.
+
+  USAGE:
+  <homePartnersComponent :setup="config.home.partners" />
+
+  CONFIG EXAMPLE (setup object):
+  partners: {
+    title: 'Our Partners',
+    style: {
+      section: { background: 'surface' },
+      card: { background: 'surface' },
+      size: '200px',               // Logo height
+    },
+    content: [
+      {
+        img: '/images/partner01.webp',
+        link: 'https://partner.com',
+        subtitle: 'Partner Name',
+        text: 'Description with **markdown** support.',
+      },
+    ],
+  }
+-->
 <template>
-  <section id="logos" :style="style('section', setup)">
+  <section id="partners" :style="sectionStyle">
     <v-container :style="`max-width: ${config.vuetify.theme.maxWidth}`">
       <v-row align="center" justify="center" class="px-0 py-8">
         <homeTitleComponent :setup="setup"></homeTitleComponent>
@@ -19,7 +45,7 @@
                 </a>
               </v-col>
               <v-col cols="12" md="10">
-                <homeContentsTextComponent class="pl-5 py-4" :item="item"></homeContentsTextComponent>
+                <homeTextComponent class="pl-5 py-4" :item="item" variant="content" alignment="left"></homeTextComponent>
               </v-col>
             </v-row>
           </v-window-item>
@@ -32,24 +58,43 @@
 /**
  * Module dependencies.
  */
+import { useTheme } from 'vuetify';
 import { style } from '../../../lib/helpers/theme';
 import homeTitleComponent from './utils/home.title.component.vue';
 import homeImgComponent from './utils/home.img.component.vue';
-import homeContentsTextComponent from './utils/home.content.text.component.vue';
+import homeTextComponent from './utils/home.text.component.vue';
 /**
  * Export default
  */
 export default {
-  name: 'HomeLogosComponent',
+  name: 'HomeLogoSliderComponent',
   components: {
     homeTitleComponent,
-    homeContentsTextComponent,
+    homeTextComponent,
     homeImgComponent,
   },
   props: {
     setup: {
       type: Object,
       required: true,
+    },
+  },
+  data() {
+    const theme = useTheme();
+    return {
+      theme,
+    };
+  },
+  computed: {
+    variant() {
+      return this.setup.variant || 'default';
+    },
+    sectionStyle() {
+      const bgColor = this.variant === 'alternate' ? this.theme.current.colors.surface : this.theme.current.colors.background;
+      return {
+        ...style('section', this.setup),
+        background: bgColor,
+      };
     },
   },
   methods: {

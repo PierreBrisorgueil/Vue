@@ -1,18 +1,6 @@
 /**
  * @desc Function to return actual theme
  * @param {String} option in config
- * @return {String} theme
- */
-export const defineTheme = (theme) => {
-  if (theme === 'auto') {
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  }
-  return theme ? 'dark' : 'light';
-};
-
-/**
- * @desc Function to return actual theme
- * @param {String} option in config
  * @return {Boolean} dark value
  */
 export const isDark = (theme) => {
@@ -188,6 +176,21 @@ export const liquidGlassStyle = ({
 };
 
 /**
+ * @desc Helper to lighten a hex color
+ * @param {String} hex - Hex color (e.g. #RRGGBB)
+ * @param {Number} percent - Percentage to lighten (0-100)
+ * @return {String} Hex color string
+ */
+export const lightenColor = (hex, percent) => {
+  const num = parseInt(hex.replace('#', ''), 16);
+  const amt = Math.round(2.55 * percent);
+  const R = Math.min(255, (num >> 16) + amt);
+  const G = Math.min(255, ((num >> 8) & 0x00ff) + amt);
+  const B = Math.min(255, (num & 0x0000ff) + amt);
+  return `#${(0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1)}`;
+};
+
+/**
  * Exports.
  */
-export default { defineTheme, isDark, style, liquidGlassStyle };
+export default { isDark, style, liquidGlassStyle, lightenColor };
