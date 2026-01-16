@@ -101,8 +101,6 @@ export default {
       return this.theme.global.name.value;
     },
     dynamicIslandStyle() {
-      const backgroundColor = this.config.vuetify.theme.themes[this.theme].colors.background;
-      const surfaceColor = this.config.vuetify.theme.themes[this.theme].colors.surface;
       return {
         ...liquidGlassStyle({
           vuetifyTheme: this.theme,

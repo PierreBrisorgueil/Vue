@@ -32,8 +32,10 @@
 <template>
   <section id="articles" :style="sectionStyle">
     <v-container ref="imagesContainer" :style="`max-width: ${config.vuetify.theme.maxWidth}`">
-      <v-row align="center" justify="center" class="px-3 py-8">
-        <homeTitleComponent :setup="setup"></homeTitleComponent>
+      <v-row align="center" justify="center" class="px-0 py-8">
+        <v-col cols="12">
+          <homeContentComponent :setup="setup"></homeContentComponent>
+        </v-col>
         <v-carousel
           v-if="setup.content.length > 0"
           v-model="step"
