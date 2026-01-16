@@ -27,17 +27,19 @@
   }
 -->
 <template>
-  <section id="timeline" :style="sectionStyle">
+  <section id="steps" :style="sectionStyle">
     <v-container ref="timelineContainer" :style="`max-width: ${config.vuetify.theme.maxWidth}`">
       <v-row align="center" justify="center" class="px-0 py-8">
-        <homeTitleComponent :setup="setup"></homeTitleComponent>
+        <v-col cols="12">
+          <homeContentComponent :setup="setup"></homeContentComponent>
+        </v-col>
         <v-timeline v-if="setup.content.length > 0" :density="$vuetify.display.smAndDown ? 'compact' : 'default'">
           <v-timeline-item
             v-for="(item, i) in setup.content"
             :key="i"
-            :dot-color="item.color"
-            :icon-color="item.iconColor || 'white'"
-            :icon="item.icon"
+            :dot-color="item.stepColor"
+            :icon-color="item.stepIconColor || 'white'"
+            :icon="item.stepIcon"
             fill-dot
             size="x-large"
           >
@@ -46,7 +48,7 @@
             </template>
             <v-card :class="`${config.vuetify.theme.rounded} my-8 pb-2`" :flat="config.vuetify.theme.flat" :style="cardStyle">
               <homeImgComponent v-if="item.img && !item.reversed" :img="item.img"></homeImgComponent>
-              <homeTextComponent :item="item" variant="card" alignment="center"></homeTextComponent>
+              <homeContentComponent :setup="item" variant="card" alignment="center"></homeContentComponent>
               <homeImgComponent v-if="item.img && item.reversed" :img="item.img"></homeImgComponent>
             </v-card>
           </v-timeline-item>
@@ -62,17 +64,15 @@
  */
 import { useTheme } from 'vuetify';
 import { style } from '../../../lib/helpers/theme';
-import homeTitleComponent from './utils/home.title.component.vue';
-import homeTextComponent from './utils/home.text.component.vue';
+import homeContentComponent from './utils/home.content.component.vue';
 import homeImgComponent from './utils/home.img.component.vue';
 /**
  * Component definition.
  */
 export default {
-  name: 'HomeTimelineComponent',
+  name: 'HomeStepsComponent',
   components: {
-    homeTitleComponent,
-    homeTextComponent,
+    homeContentComponent,
     homeImgComponent,
   },
   props: {

@@ -22,17 +22,19 @@
   - subBanner: true creates a -40vh margin-top for overlap effect
 -->
 <template>
-  <section v-if="setup && setup.file" id="video" :style="sectionStyle" class="pa-8 pb-10">
-    <v-container
-      :class="`text-center pa-4 ${config.vuetify.theme.rounded}`"
-      :style="{
-        'max-width': config.vuetify.theme.maxWidth,
-        'margin-top': setup.subBanner ? ($vuetify.display.smAndDown ? '-20vh' : '-40vh') : 0,
-        position: 'relative',
-        ...style('video', setup),
-      }"
-    >
-      <video-player :src="setup.file" :poster="setup.poster" :controls="false" loop muted autoplay fluid />
+  <section v-if="setup && setup.file" id="presentation" :style="sectionStyle" class="pa-8 pb-10">
+    <v-container class="text-center" :style="containerStyle">
+      <video-player
+        :src="setup.file"
+        :poster="setup.poster"
+        :controls="false"
+        :background-color="setup.style?.video?.background || '#101115'"
+        :rounded="config.vuetify.theme.rounded"
+        loop
+        muted
+        autoplay
+        fluid
+      />
     </v-container>
   </section>
 </template>
@@ -43,13 +45,13 @@
  */
 import { useTheme } from 'vuetify';
 import VideoPlayer from './utils/home.videoplayer.component.vue';
-import { style } from '../../../lib/helpers/theme';
+import { style, liquidGlassStyle } from '../../../lib/helpers/theme';
 
 /**
  * Component definition.
  */
 export default {
-  name: 'HomeVideoComponent',
+  name: 'HomePresentationComponent',
   components: {
     VideoPlayer,
   },
@@ -79,6 +81,15 @@ export default {
       return {
         ...style('section', this.setup),
         background: bgColor,
+      };
+    },
+    containerStyle() {
+      return {
+        'max-width': this.config.vuetify.theme.maxWidth,
+        'margin-top': this.setup.subBanner ? (this.$vuetify.display.smAndDown ? '-20vh' : '-40vh') : 0,
+        position: 'relative',
+        padding: '12px',
+        ...liquidGlassStyle({ vuetifyTheme: this.theme }),
       };
     },
   },

@@ -30,16 +30,18 @@
   }
 -->
 <template>
-  <section id="resources" :style="sectionStyle">
+  <section id="services" :style="sectionStyle">
     <v-container :style="`max-width: ${config.vuetify.theme.maxWidth}`">
-      <v-row v-if="setup.content.length > 0" align="center" justify="center" class="px-0 py-8">
-        <homeTitleComponent :setup="setup"></homeTitleComponent>
+      <v-row class="px-0 py-8">
+        <v-col cols="12">
+          <homeContentComponent :setup="setup"></homeContentComponent>
+        </v-col>
         <v-col v-for="(item, i) in setup.content" :key="i" cols="12" sm="12" md="4" data-aos="fade">
-          <v-card :class="`text-center pt-8 pb-2 ${config.vuetify.theme.rounded}`" :flat="config.vuetify.theme.flat" :style="cardStyle">
-            <v-btn icon :color="item.color ? item.color : 'primary'" width="100" height="100" class="text-white">
-              <v-icon :icon="item.icon" size="x-large"></v-icon>
+          <v-card :class="`py-6 px-2 ${config.vuetify.theme.rounded}`" :flat="config.vuetify.theme.flat" :style="cardStyle">
+            <v-btn icon :color="item.color ? item.color : 'primary'" width="50" height="50" class="text-white ml-3 mb-4">
+              <v-icon :icon="item.serviceIcon" size="x-medium"></v-icon>
             </v-btn>
-            <homeTextComponent :item="item" variant="card" alignment="center"></homeTextComponent>
+            <homeContentComponent :setup="item" variant="card"></homeContentComponent>
           </v-card>
         </v-col>
       </v-row>
@@ -53,16 +55,14 @@
  */
 import { useTheme } from 'vuetify';
 import { style } from '../../../lib/helpers/theme';
-import homeTitleComponent from './utils/home.title.component.vue';
-import homeTextComponent from './utils/home.text.component.vue';
+import homeContentComponent from './utils/home.content.component.vue';
 /**
  * Component definition.
  */
 export default {
-  name: 'HomeIconGridComponent',
+  name: 'HomeServicesComponent',
   components: {
-    homeTitleComponent,
-    homeTextComponent,
+    homeContentComponent,
   },
   props: {
     setup: {

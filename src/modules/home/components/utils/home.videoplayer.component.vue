@@ -31,7 +31,7 @@
   - For autoplay to work on most browsers, muted must be true
 -->
 <template>
-  <div class="video-player">
+  <div class="video-player" :style="{ background: backgroundColor, borderRadius: borderRadius }">
     <video ref="videoElement" class="video-js"></video>
   </div>
 </template>
@@ -56,6 +56,14 @@ export default {
     poster: {
       type: String,
       default: '',
+    },
+    backgroundColor: {
+      type: String,
+      default: '#101115',
+    },
+    rounded: {
+      type: String,
+      default: 'rounded-lg',
     },
     controls: {
       type: Boolean,
@@ -115,6 +123,19 @@ export default {
     return {
       player: null,
     };
+  },
+  computed: {
+    borderRadius() {
+      const roundedMap = {
+        'rounded-0': '0px',
+        'rounded-sm': '2px',
+        rounded: '4px',
+        'rounded-lg': '8px',
+        'rounded-xl': '24px',
+        'rounded-pill': '9999px',
+      };
+      return roundedMap[this.rounded] || '16px';
+    },
   },
   watch: {
     src(newSrc) {
@@ -199,10 +220,7 @@ export default {
 <style scoped>
 .video-player {
   width: 100%;
-  background: transparent;
-}
-
-.video-player :deep(.video-js) {
-  background-color: transparent;
+  overflow: hidden;
+  padding: 4px;
 }
 </style>

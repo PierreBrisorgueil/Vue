@@ -30,10 +30,12 @@
   ]
 -->
 <template>
-  <section id="blog" :style="sectionStyle">
+  <section id="articles" :style="sectionStyle">
     <v-container ref="imagesContainer" :style="`max-width: ${config.vuetify.theme.maxWidth}`">
       <v-row align="center" justify="center" class="px-0 py-8">
-        <homeTitleComponent :setup="setup"></homeTitleComponent>
+        <v-col cols="12">
+          <homeContentComponent :setup="setup"></homeContentComponent>
+        </v-col>
         <v-carousel
           v-if="setup.content.length > 0"
           v-model="step"
@@ -80,7 +82,7 @@
  */
 import { useTheme } from 'vuetify';
 import { style } from '../../../lib/helpers/theme';
-import homeTitleComponent from './utils/home.title.component.vue';
+import homeContentComponent from './utils/home.content.component.vue';
 import homeImgComponent from './utils/home.img.component.vue';
 import homeDynamicIsland from './utils/home.dynamicIsland.component.vue';
 
@@ -88,9 +90,9 @@ import homeDynamicIsland from './utils/home.dynamicIsland.component.vue';
  * Export default
  */
 export default {
-  name: 'HomeMediaCarouselComponent',
+  name: 'HomeArticlesComponent',
   components: {
-    homeTitleComponent,
+    homeContentComponent,
     homeImgComponent,
     homeDynamicIsland,
   },

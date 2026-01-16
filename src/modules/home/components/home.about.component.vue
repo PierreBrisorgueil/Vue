@@ -24,7 +24,6 @@
         },
         reversed: false,       // Text position (false = after media, true = before)
         fullWidth: true,       // Full width content
-        quote: false,          // Display as quote style
         button: {
           title: 'Learn More',
           link: '/features',
@@ -34,20 +33,26 @@
   }
 -->
 <template>
-  <section id="content" :style="sectionStyle">
+  <section id="about" :style="sectionStyle">
     <v-container :style="`max-width: ${config.vuetify.theme.maxWidth}`">
       <v-row v-if="setup.content.length > 0" align="center" justify="center" class="px-0 py-8">
-        <homeTitleComponent :setup="setup"></homeTitleComponent>
+        <v-col cols="12">
+          <homeContentComponent :setup="setup"></homeContentComponent>
+        </v-col>
         <v-col v-for="(item, i) in setup.content" :key="i" :md="item.fullWidth ? 12 : setup.content.length > 1 ? 6 : 12" cols="12">
-          <homeContentsTextComponent v-if="item.reversed" :item="item" class="mb-6"></homeContentsTextComponent>
-          <div
-            v-if="item.video"
-            :class="`py-6 ${config.vuetify.theme.rounded}`"
-            :style="{
-              ...style('video', setup),
-            }"
-          >
-            <video-player :src="item.video.file" :controls="false" :poster="item.video.poster" loop muted autoplay fluid />
+          <homeContentComponent v-if="item.reversed" :setup="item" class="mb-6"></homeContentComponent>
+          <div v-if="item.video" :class="`py-6`">
+            <video-player
+              :src="item.video.file"
+              :controls="false"
+              :poster="item.video.poster"
+              :background-color="item.video.background || setup.style?.video?.background || '#101115'"
+              :rounded="config.vuetify.theme.rounded"
+              loop
+              muted
+              autoplay
+              fluid
+            />
           </div>
           <v-img
             v-if="item.img"
@@ -57,7 +62,7 @@
             cover
             :alt="item.subtitle || item.title || 'content'"
           ></v-img>
-          <homeContentsTextComponent v-if="!item.reversed" :item="item"></homeContentsTextComponent>
+          <homeContentComponent v-if="!item.reversed" :setup="item"></homeContentComponent>
         </v-col>
       </v-row>
     </v-container>
@@ -71,18 +76,16 @@
 import { useTheme } from 'vuetify';
 import VideoPlayer from './utils/home.videoplayer.component.vue';
 import { style } from '../../../lib/helpers/theme';
-import homeTitleComponent from './utils/home.title.component.vue';
-import homeContentsTextComponent from './utils/home.text.component.vue';
+import homeContentComponent from './utils/home.content.component.vue';
 
 /**
  * Component definition.
  */
 export default {
-  name: 'HomeContentComponent',
+  name: 'HomeAboutComponent',
   components: {
     VideoPlayer,
-    homeTitleComponent,
-    homeContentsTextComponent,
+    homeContentComponent,
   },
   props: {
     setup: {

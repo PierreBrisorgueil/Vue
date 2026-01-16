@@ -1,12 +1,13 @@
 <template>
   <div>
-    <homeBannerBlurComponent
+    <homeHeroComponent
+      variant="blur"
       :ratio="3"
       :title="$route.meta.title || lodash.startCase($route.params.name)"
       :animation-speed="config.home.banner?.blur?.animationSpeed || 1"
       :background-colors="themeName === 'dark' ? config.home.banner?.blur?.dark?.backgroundColors : config.home.banner?.blur?.light?.backgroundColors"
       :halo-colors="themeName === 'dark' ? config.home.banner?.blur?.dark?.haloColors : config.home.banner?.blur?.light?.haloColors"
-    ></homeBannerBlurComponent>
+    ></homeHeroComponent>
     <section id="page" :style="style('section', config.pages)">
       <v-container class="py-12" :style="`max-width: ${config.vuetify.theme.maxWidth}`">
         <v-row align="center" justify="center">
@@ -35,14 +36,14 @@
 import { useTheme } from 'vuetify';
 import { useHomeStore } from '../stores/home.store';
 import { style } from '../../../lib/helpers/theme';
-import homeBannerBlurComponent from '../components/home.banner.blur.component.vue';
+import homeHeroComponent from '../components/home.hero.component.vue';
 
 /**
  * Component definition.
  */
 export default {
   components: {
-    homeBannerBlurComponent,
+    homeHeroComponent,
   },
   data() {
     const theme = useTheme();

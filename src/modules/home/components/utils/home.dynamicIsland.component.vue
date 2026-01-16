@@ -101,13 +101,9 @@ export default {
       return this.theme.global.name.value;
     },
     dynamicIslandStyle() {
-      const backgroundColor = this.theme.current.colors.background;
-      const surfaceColor = this.theme.current.colors.surface;
       return {
         ...liquidGlassStyle({
-          theme: this.themeName,
-          backgroundColor,
-          surfaceColor,
+          vuetifyTheme: this.theme,
           intensity: 1,
           tint: this.themeName === 'dark' ? 0.75 : -0.5,
           variant: 'pill',

@@ -19,7 +19,9 @@
   <section id="contact" :style="sectionStyle">
     <v-container :style="`max-width: ${config.vuetify.theme.maxWidth}`">
       <v-row align="center" justify="center" class="px-0 py-8">
-        <homeTitleComponent :setup="config.home.contact"></homeTitleComponent>
+        <v-col cols="12">
+          <homeContentComponent :setup="config.home.contact"></homeContentComponent>
+        </v-col>
         <v-col>
           <v-form ref="form">
             <v-text-field v-model="subject" :flat="config.vuetify.theme.flat" name="subject" label="Subject*"></v-text-field>
@@ -48,7 +50,7 @@
 import { useTheme } from 'vuetify';
 import { useHomeStore } from '../stores/home.store';
 import { style } from '../../../lib/helpers/theme';
-import homeTitleComponent from './utils/home.title.component.vue';
+import homeContentComponent from './utils/home.content.component.vue';
 
 /**
  * Export default
@@ -56,7 +58,7 @@ import homeTitleComponent from './utils/home.title.component.vue';
 export default {
   name: 'HomeContactComponent',
   components: {
-    homeTitleComponent,
+    homeContentComponent,
   },
   props: {},
   data() {

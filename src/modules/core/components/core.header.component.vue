@@ -137,31 +137,25 @@ export default {
       return authStore.isLoggedIn;
     },
     headerStyle() {
-      const colors = this.theme.current.colors;
       return liquidGlassStyle({
-        theme: this.themeName,
-        backgroundColor: colors.background,
-        surfaceColor: colors.surfaceColor,
+        vuetifyTheme: this.theme,
         intensity: 1,
         variant: 'header',
         border: 'none',
         extras: {
-          color: colors.onSurface,
+          color: this.theme.current.colors.onSurface,
           width: '100%',
         },
       });
     },
     menuStyle() {
-      const colors = this.theme.current.colors;
       return liquidGlassStyle({
-        theme: this.themeName,
-        backgroundColor: colors.background,
-        surfaceColor: colors.surfaceColor,
+        vuetifyTheme: this.theme,
         intensity: 0.6,
         variant: 'card',
         border: 'none',
         extras: {
-          color: colors.onSurface,
+          color: this.theme.current.colors.onSurface,
         },
       });
     },

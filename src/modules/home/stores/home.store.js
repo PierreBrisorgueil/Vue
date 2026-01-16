@@ -22,7 +22,7 @@ export const useHomeStore = defineStore('home', {
 
   actions: {
     initStatistics() {
-      this.statistics = config.home.metrics ? config.home.metrics.content : null;
+      this.statistics = config.home.statistics ? config.home.statistics.content : null;
     },
 
     async getTeam() {
@@ -77,7 +77,7 @@ export const useHomeStore = defineStore('home', {
           console.warn('blog configuration is missing url or key');
           return;
         }
-        
+
         const ghost = new GhostContentAPI({
           url: config.home.blog.url,
           key: config.home.blog.key,
