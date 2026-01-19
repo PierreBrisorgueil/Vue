@@ -92,7 +92,7 @@ export default {
   },
   computed: {
     themeName() {
-      return this.theme.global.name.value;
+      return this.theme.name;
     },
     computedTint() {
       if (this.tint === 'auto') {

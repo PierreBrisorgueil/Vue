@@ -663,6 +663,7 @@ export default {
     },
   },
   footer: {
+    variant: 'alternate',
     links: [
       {
         title: 'Useful',
