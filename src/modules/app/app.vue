@@ -20,12 +20,7 @@
     <v-main class="pb-0" :style="{ background: theme.current.colors.background }">
       <router-view />
     </v-main>
-    <waosFooter
-      :links="config.footer.links"
-      :custom="{
-        section: { background: theme.current.colors.surface, 'min-width': '100%' },
-      }"
-    />
+    <waosFooter :links="config.footer.links" :variant="config.footer.variant || 'default'" />
   </v-app>
 </template>
 
@@ -36,7 +31,6 @@
 import { useHead } from '@unhead/vue';
 import { useTheme } from 'vuetify';
 import { useAuthStore } from '../auth/stores/auth.store';
-import { useCoreStore } from '../core/stores/core.store';
 import { setupInterceptors } from '../../lib/services/axios';
 import waosHeader from '../core/components/core.header.component.vue';
 import waosNav from '../core/components/core.navigation.component.vue';
@@ -65,13 +59,12 @@ export default {
     };
   },
   computed: {
+    themeName() {
+      return this.theme.name;
+    },
     isLoggedIn() {
       const authStore = useAuthStore();
       return authStore.isLoggedIn;
-    },
-    themeName() {
-      const coreStore = useCoreStore();
-      return coreStore.theme;
     },
   },
   created() {
